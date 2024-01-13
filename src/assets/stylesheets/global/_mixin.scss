@@ -1,0 +1,38 @@
+@use 'variable' as *;
+
+// ブレイクポイント設定
+@mixin mediaQueries($point) {
+  @media #{map-get($mediaQueries, $point)} {
+    @content;
+  }
+}
+
+@mixin is-mobileOnly {
+  @media #{map-get($mediaQueries, "mobileOnly")} {
+    @content;
+  }
+}
+
+@mixin is-tablet {
+  @media #{map-get($mediaQueries, "tablet")} {
+    @content;
+  }
+}
+
+@mixin is-tabletOnly {
+  @media #{map-get($mediaQueries, "tabletOnly")} {
+    @content;
+  }
+}
+
+@mixin is-tabletDown {
+  @media #{map-get($mediaQueries, "tabletDown")} {
+    @content;
+  }
+}
+
+@mixin is-pc {
+  @media #{map-get($mediaQueries, "pc")} {
+    @content;
+  }
+}

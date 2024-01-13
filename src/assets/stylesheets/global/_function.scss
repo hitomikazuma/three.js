@@ -1,0 +1,9 @@
+@use 'sass:math';
+
+@function rem($px) {
+  @return ($px / 16) * 1rem;
+}
+
+@function lineHeight($DesignLineHeight, $fontSize) {
+  @return math.div($DesignLineHeight, $fontSize);
+}
