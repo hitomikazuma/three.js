@@ -1,45 +1,45 @@
-// by SamuelYAN
-// more works //
-// https://twitter.com/SamuelAnn0924
-// https://www.instagram.com/samuel_yan_1990/
+let scene, camera, renderer, cube
 
-// refer: https://www.youtube.com/c/lewislepton
+function init() {
+  scene = new THREE.Scene()
+  camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000)
 
-let mySize
+  renderer = new THREE.WebGLRenderer({ antialias: true })
 
-// a shader variable
-let theShader
+  renderer.setSize(window.innerWidth, window.innerHeight)
 
-function preload() {
-  theShader = new p5.Shader(this.renderer, vert, frag)
+  document.body.appendChild(renderer.domElement)
+
+  /* ボックスのサイズ決定、メッシュ、追加 */
+  const geometry = new THREE.BoxGeometry(2, 2, 2)
+  const material = new THREE.MeshBasicMaterial({ color: 0x0000ff })
+
+  // const texture = new THREE.TextureLoader().load("textures/minecraft-box.png");
+  // const material = new THREE.MeshBasicMaterial({ map: texture });
+
+  cube = new THREE.Mesh(geometry, material)
+  scene.add(cube)
+
+  camera.position.z = 5 /* カメラの位置を手前に変更 */
 }
 
-function setup() {
-  mySize = min(windowWidth, windowHeight)
-  // shaders require WEBGL mode to work
-  // createCanvas(mySize, mySize/16*11, WEBGL);
-  createCanvas(mySize, mySize, WEBGL)
-  noStroke()
+/* アニメーション制御 */
+function animate() {
+  requestAnimationFrame(animate) /* ループ */
+  cube.rotation.x += 0.01 /* x軸を中心として回転 */
+  cube.rotation.y += 0.01 /* y軸を中心として回転 */
+
+  renderer.render(scene, camera)
 }
 
-function draw() {
-  // shader() sets the active shader with our shader
-  shader(theShader)
-
-  theShader.setUniform('u_resolution', [width, height])
-  theShader.setUniform('u_frame', frameCount / 2.0)
-  theShader.setUniform('u_time', frameCount * 0.001)
-  theShader.setUniform('u_mouse', [mouseX / 10.0, map(mouseY, 0, height, height, 0) / 10.0])
-
-  // rect gives us some geometry on the screen
-  rect(0, 0, width, height)
+/* ウィンドウ変更時にサイズを維持する処理 */
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight
+  camera.updateProjectionMatrix()
+  renderer.setSize(window.innerWidth, window.innerHeight)
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight)
-}
+window.addEventListener('resize', onWindowResize)
 
-function keyPressed() {
-  //noLoop();
-  saveCanvas('Shaders_002_2022', 'png')
-}
+init()
+animate()
